@@ -4,7 +4,7 @@ push = require 'push'
 WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
 WINDOW_WIDTH, WINDOW_HEIGHT = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
 VIRTUAL_WIDTH = 432
-VIRTUAL_HEIGHT = 243
+VIRTUAL_HEIGHT = 248
  
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
