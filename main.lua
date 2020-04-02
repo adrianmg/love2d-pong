@@ -19,6 +19,7 @@ function love.load()
     vsync = true,
     pixelperfect = true
   })
+  push:setBorderColor{51, 51, 51}
 end
 
 function love.keypressed(key)
@@ -43,7 +44,7 @@ end
 function love.draw()
   push:apply('start')
 
-  love.graphics.clear(255, 0, 255)
+  love.graphics.clear(0, 0, 0, 1)
   love.graphics.printf('Pong!', 0, 16, VIRTUAL_WIDTH, 'center')
 
   -- Render: Player
