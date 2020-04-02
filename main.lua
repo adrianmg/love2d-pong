@@ -50,10 +50,11 @@ function love.draw()
   -- Render: Player
   paddleInitialX = 16
   paddleInitialY = 36
-  paddleSize = 40
-  love.graphics.rectangle('fill', paddleInitialX, paddleInitialY, 5, paddleSize)
+  paddleWidth = 6
+  paddleHeight = 40
+  love.graphics.rectangle('fill', paddleInitialX, paddleInitialY, paddleWidth, paddleHeight)
   -- Render: Enemy
-  love.graphics.rectangle('fill', VIRTUAL_WIDTH - paddleInitialX, VIRTUAL_HEIGHT - (paddleSize + paddleInitialY), 5, paddleSize)
+  love.graphics.rectangle('fill', VIRTUAL_WIDTH - (paddleInitialX + paddleWidth), VIRTUAL_HEIGHT - (paddleHeight + paddleInitialY), paddleWidth, paddleHeight)
   
   -- Render: Ball
   ballSize = 4
