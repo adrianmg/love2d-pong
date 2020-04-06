@@ -1,17 +1,25 @@
 push = require 'push'
 
--- Configuration
+-- Globals
 WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
 WINDOW_WIDTH, WINDOW_HEIGHT = WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 248
- 
+SCORE_FONT = 32
+
+PADDLE_SPEED = 300
+PADDLE_WIDTH = 6
+PADDLE_HEIGHT = 40
+
+-- Initial configuration
 function love.load()
+  love.window.setTitle('Pong')
+
   love.graphics.setDefaultFilter('nearest', 'nearest')
   
-  font = love.graphics.newFont('res/font.ttf', 16)
-  love.graphics.setFont(font)
-  love.window.setTitle('Pong')
+  font = love.graphics.newFont('res/font.ttf', 8)
+  fontScore = love.graphics.newFont('res/font.ttf', SCORE_FONT)
+  
 
   push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
     fullscreen = false,
@@ -20,6 +28,30 @@ function love.load()
     pixelperfect = true
   })
   push:setBorderColor{51, 51, 51}
+
+  -- Players
+  player1Score = 0
+  player2Score = 0
+  player1X = 16
+  player2X = VIRTUAL_WIDTH - (player1X + PADDLE_WIDTH)
+  player1Y = 36
+  player2Y = VIRTUAL_HEIGHT - (PADDLE_HEIGHT + player1Y)
+end
+
+function love.update(dt)
+  -- Player1 movement
+  if love.keyboard.isDown('w') then
+    player1Y = player1Y + -(PADDLE_SPEED * dt)
+  elseif love.keyboard.isDown('s') then
+    player1Y = player1Y + (PADDLE_SPEED * dt)
+  end
+  
+  -- Player2 movement
+  if love.keyboard.isDown('up') then
+    player2Y = player2Y + -(PADDLE_SPEED * dt)
+  elseif love.keyboard.isDown('down') then
+    player2Y = player2Y + (PADDLE_SPEED * dt)
+  end
 end
 
 function love.keypressed(key)
@@ -43,22 +75,23 @@ end
 
 function love.draw()
   push:apply('start')
-
-  love.graphics.clear(0, 0, 0, 1)
-  love.graphics.printf('Pong!', 0, 16, VIRTUAL_WIDTH, 'center')
-
-  -- Render: Player
-  paddleInitialX = 16
-  paddleInitialY = 36
-  paddleWidth = 6
-  paddleHeight = 40
-  love.graphics.rectangle('fill', paddleInitialX, paddleInitialY, paddleWidth, paddleHeight)
-  -- Render: Enemy
-  love.graphics.rectangle('fill', VIRTUAL_WIDTH - (paddleInitialX + paddleWidth), VIRTUAL_HEIGHT - (paddleHeight + paddleInitialY), paddleWidth, paddleHeight)
   
-  -- Render: Ball
+  love.graphics.clear(0, 0, 0, 1)
+
+  -- UI
+  love.graphics.setFont(font)
+  love.graphics.printf('Pong!', 0, 16, VIRTUAL_WIDTH, 'center')
+  love.graphics.setFont(fontScore)
+  love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - SCORE_FONT / 2 - SCORE_FONT, 36)
+  love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + SCORE_FONT, 36)
+
+  -- Render Players
+  love.graphics.rectangle('fill', player1X, player1Y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  love.graphics.rectangle('fill', player2X, player2Y, PADDLE_WIDTH, PADDLE_HEIGHT)
+  
+  -- Render Ball
   ballSize = 4
-  love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - (ballSize * 2), VIRTUAL_HEIGHT / 2 - (ballSize * 2), ballSize, ballSize)
+  love.graphics.rectangle('fill', (VIRTUAL_WIDTH / 2) - (ballSize / 2), (VIRTUAL_HEIGHT / 2) - (ballSize / 2), ballSize, ballSize)
 
   push:apply('end')
 end
