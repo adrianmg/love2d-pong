@@ -27,9 +27,9 @@ function love.load()
     fullscreen = false,
     resizable = false,
     vsync = true,
-    pixelperfect = true
+    -- pixelperfect = true
   })
-  push:setBorderColor{51, 51, 51}
+  -- push:setBorderColor{51, 51, 51}
 
   -- Players
   player1Score = 0
